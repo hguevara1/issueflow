@@ -26,9 +26,7 @@ final class HomeController
                 <body>
                     <main>
                         <h1>{$projectName}</h1>
-                        <p>{$message}</p>
-                        <p><a href="/tickets">Ver incidencias</a></p>
-                        <p><a href="/health">Comprobar estado</a></p>
+                        
                     </main>
                 </body>
             </html>
