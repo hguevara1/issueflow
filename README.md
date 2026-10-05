@@ -27,10 +27,10 @@ Entrar en la carpeta:
 cd issueflow
 ```
 
-Instalar los componentes para una aplicación web:
+Instalar los componentes para una aplicación:
 
 ```bash
-composer require webapp
+composer install
 ```
 
 ## Ejecutar el proyecto
