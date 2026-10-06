@@ -9,33 +9,100 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TicketController
 {
+    /* En este ejemplo, los tickets se definen de forma estática. 
+        En un caso real, se obtendrían de una base de datos. */
+
+    /* TICKETS es un array donde cada elemento es un ticket en particular
+    Cada ticket es un array asociativo, que contiene los datos o propiedades de este. */
+    // Esto es una constante de clase, que se puede acceder desde cualquier método de la clase TicketController.
+    private const TICKETS = [
+        ['id' => 'INC-1001', 'title' => 'No puedo iniciar sesión', 'priority' => 'urgent'],
+        ['id' => 'INC-1002', 'title' => 'Error en la factura', 'priority' => 'high'],
+        ['id' => 'INC-1003', 'title' => 'Actualizar datos de contacto', 'priority' => 'normal'],
+    ];
+
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
-    public function index(): Response
-    {
-        $tickets = [
-            ['id' => 'INC-1001', 'title' => 'No puedo iniciar sesión', 'priority' => 'urgent'],
-            ['id' => 'INC-1002', 'title' => 'Error en la factura', 'priority' => 'high'],
-            ['id' => 'INC-1003', 'title' => 'Actualizar datos de contacto', 'priority' => 'normal'],
-        ];
-
+    // El método que devuelve la lista de tickets por convención REST es index().
+    public function index(): Response {
+        // Se inicializan las variables $items, $title y $total que contendrán los <li> de cada incidencia, el título y el total respectivamente.
         $items = '';
+        $title = 'Incidencias';
+        // self::TICKETS hace referencia a la constante de clase TICKETS, que contiene el array de incidencias.
+        $total = count(self::TICKETS);
 
-        foreach ($tickets as $ticket) {
-            // TODO 1: construir un <li> por cada incidencia.
+        foreach (self::TICKETS as $ticket) {
             $items .= "<li>{$ticket['id']}: {$ticket['title']} ({$ticket['priority']})</li>";
         }
+        /*
+        Esto es lo que sucede en cada iteración del bucle foreach:
+        Inicialmente,
+        $items = '';
+        Primer ticket del ciclo foreach:
+        $items = '<li>INC-1001: No puedo iniciar sesión (urgent)</li>';
+        Segundo ticket del ciclo foreach:
+        $items = '<li>INC-1001: No puedo iniciar sesión (urgent)</li><li>INC-1002: Error en la factura (high)</li>';
+        Tercer ticket del ciclo foreach:
+        $items = '<li>INC-1001: No puedo iniciar sesión (urgent)</li><li>INC-1002: Error en la factura (high)</li><li>INC-1003: Actualizar datos de contacto (normal)</li>'    
+        */
 
-        // TODO 2: construir el HTML final con un H1, total, UL y enlace a /.
-        $html = "
-            <h1>Listado de incidencias</h1>
-            <p>Total: " . count($tickets) . "</p>
-            <ul>
-                $items
-            </ul>
-            <a href='/'>Volver al inicio</a>";
+        $html = <<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>{$title}</title>
+            </head>
+            <body>
+                <h1>{$title}</h1>
+                <p>Total de incidencias: {$total}</p>
+                <ul>
+                    {$items}
+                </ul>
+                <p><a href="/">Volver a la página principal</a></p>
+            </body>
+            </html>
+        HTML;
 
-
-        // TODO 3: devolver una Response HTTP 200.
         return new Response($html, Response::HTTP_OK);
+    }
+
+    // Ruta dinámica para mostrar un ticket específico por su ID.
+    #[Route('/tickets/{id}', name: 'app_ticket_show', methods: ['GET'])]
+    public function show(string $id) {
+        // Se busca el ticket por su ID en el array de tickets.
+        $ticket = null;
+        foreach (self::TICKETS as $t) {
+            if ($t['id'] === $id) {
+                $ticket = $t;
+                break;
+            }
+        }
+
+        // Si no se encuentra el ticket, se devuelve un 404.
+        if ($ticket === null) {
+            return new Response('Ticket no encontrado', Response::HTTP_NOT_FOUND);
+        }
+
+        // Si se encuentra el ticket, se muestra su información.
+        $html = <<<HTML
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Ticket {$ticket['id']}</title>
+            </head>
+            <body>
+                <h1>Ticket {$ticket['id']}</h1>
+                <p>Título: {$ticket['title']}</p>
+                <p>Prioridad: {$ticket['priority']}</p>
+                <p><a href="/tickets">Volver a la lista de incidencias</a></p>
+            </body>
+            </html>
+        HTML;
+
+        return new Response($html, Response::HTTP_OK);
+
     }
 }
