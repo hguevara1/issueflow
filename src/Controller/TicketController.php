@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class TicketController
+// Mi clase TicketController hereda de AbstractController de Symfony
+final class TicketController extends AbstractController
 {
     /* En este ejemplo, los tickets se definen de forma estática. 
         En un caso real, se obtendrían de una base de datos. */
@@ -45,6 +48,7 @@ final class TicketController
         $items = '<li>INC-1001: No puedo iniciar sesión (urgent)</li><li>INC-1002: Error en la factura (high)</li><li>INC-1003: Actualizar datos de contacto (normal)</li>'    
         */
 
+
         $html = <<<HTML
             <!DOCTYPE html>
             <html lang="en">
@@ -68,41 +72,82 @@ final class TicketController
     }
 
     // Ruta dinámica para mostrar un ticket específico por su ID.
-    #[Route('/tickets/{id}', name: 'app_ticket_show', methods: ['GET'])]
-    public function show(string $id) {
-        // Se busca el ticket por su ID en el array de tickets.
+    #[Route('/tickets/{id}', name:"app_ticket_show", methods: ['GET'])]
+    // El método que devuelve un ticket en particular por convención REST es show().
+    // El parámetro $id identifica la ruta del ticket particular
+    public function show(string $id, Request $request) {
+
+        // Se inicializa la variable $ticket como null, que contendrá el ticket encontrado.    
         $ticket = null;
-        foreach (self::TICKETS as $t) {
-            if ($t['id'] === $id) {
-                $ticket = $t;
+
+        // Se recorre el array de tickets para buscar el ticket con el ID proporcionado.
+        foreach(self::TICKETS as $candidate) {
+            if ($candidate['id'] === $id) {
+                $ticket = $candidate;
                 break;
             }
         }
 
-        // Si no se encuentra el ticket, se devuelve un 404.
+        // En este punto del código, si $ticket sigue siendo null, significa que no se encontró ningún ticket con el ID proporcionado.
+        // Si es null, voy a lanzar un error / excepción 404: Not found
         if ($ticket === null) {
-            return new Response('Ticket no encontrado', Response::HTTP_NOT_FOUND);
+            //throw $this->createNotFoundException('La incidencia no existe');
+            $html = <<<HTML
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Ticket no existe</title>
+                </head>
+                <body>
+                    <h1>Ups... la página solicitada no existe</h1>
+                    <h2>************ Error 404 ************</h2>
+                    <p><a href="/tickets">Ver incidencias</a></p>
+                </body>
+                </html>
+            HTML;
+
+            return new Response($html, Response::HTTP_NOT_FOUND);
         }
 
-        // Si se encuentra el ticket, se muestra su información.
-        $html = <<<HTML
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Ticket {$ticket['id']}</title>
-            </head>
-            <body>
-                <h1>Ticket {$ticket['id']}</h1>
-                <p>Título: {$ticket['title']}</p>
-                <p>Prioridad: {$ticket['priority']}</p>
-                <p><a href="/tickets">Volver a la lista de incidencias</a></p>
-            </body>
-            </html>
-        HTML;
+        /* Voy a chequear si tengo parámetros en la petición / request (query)
+        Esto recupera el valor de view si existe en la URL:
+        http://localhost:8000/tickets/INC-1001?view=compact 
+        Si no existe, el asigna a $view el valor por defecto */
+        $view = $request->query->get('view', 'full');
 
+        if ($view === "compact") {
+            $html = <<<HTML
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Ticket {$id}</title>
+                </head>
+                <body>
+                    <h1>Ticket {$id}</h1>
+                </body>
+                </html>
+            HTML;
+        } else {
+            $html = <<<HTML
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Ticket {$id}</title>
+                </head>
+                <body>
+                    <h1>Ticket {$id}</h1>
+                    <p>Title: {$ticket['title']}</p>
+                    <p>Priority: {$ticket['priority']}</p>
+                </body>
+                </html>
+            HTML;
+        }
         return new Response($html, Response::HTTP_OK);
-
     }
 }
