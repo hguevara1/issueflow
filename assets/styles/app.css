@@ -40,7 +40,17 @@ main { padding-block: 2.5rem; }
 .ticket-card p { margin: .25rem 0; }
 .counter { color: #64748b; }
 .button { display: inline-block; background: #0f766e; color: white; padding: .7rem 1rem; border-radius: 8px; text-decoration: none; }
-
+/* Barra de progreso de navegación de Turbo. */
+.turbo-progress-bar {
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        #f7f779,
+        #adaa4c,
+        #3b82f6
+    );
+    box-shadow: 0 0 8px rgb(56 189 248 / 45%);
+}
 /* Ajuste sencillo para pantallas pequeñas. */
 @media (max-width: 640px) {
     .header-inner, .page-header, .ticket-card { align-items: flex-start; flex-direction: column; }
