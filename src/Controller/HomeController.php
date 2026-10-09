@@ -6,38 +6,19 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use symfony\bridge\Twig\Attribute\Template;
 
 
 final class HomeController
 {
     #[Route('/', name: 'app_home', methods: ['GET'])]
-    public function index(): Response
+    #[Template('home/index.html.twig')]
+    public function index(): array
     {
-        $projectName = 'IssueFlow';
-        $message = 'Symfony ha recibido la petición y ha devuelto una Response.';
-        $html = <<<HTML
-        <!DOCTYPE html>
-            <html lang="es">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>{$projectName}</title>
-                </head>
-                <body>
-                    <main>
-                        <h1>{$projectName}</h1>
-                        <p>{$message}</p>
-                        <p><a href="/tickets">Ver incidencias</a></p>
-                        <p><a href="/health">Comprobar estado</a></p>
-                    </main>
-                </body>
-            </html>
-        HTML;
-        
-        return new Response(
-            $html,
-            Response::HTTP_OK
-        );
+        return [
+            'projectName' => 'IssueFlow',
+            'message' => 'Symfony 8.1 ha resuelto la ruta y Twig ha construido la vista'
+        ];
     }
 
     #[Route('/health', name: 'app_health', methods: ['GET'])]

@@ -2,15 +2,25 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        <title>{% block title %}IssueFlow{% endblock %}</title>
+
+        #{ 
+            Se incluyen los estilos de Bootstrap y los estilos propios de la aplicación.
+            Se usa el helper asset() para generar la URL correcta a los archivos CSS.
+        #}
+        {% block stylesheets %}{% endblock %}
+
+        #{ 
+            Se incluyen los scripts de Bootstrap y los scripts propios de la aplicación.
+            Se usa el helper asset() para generar la URL correcta a los archivos JS.
+        #}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
 
+        
         {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphp_hot_reload %}
         <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
@@ -19,6 +29,23 @@
         {% endif %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header class="site-header">
+            <div class="container header-inner">
+                #{ 
+                    path() es un helper que genera la URL a una ruta definida en el routing de Symfony.
+                #}
+                <a class="brand" href="{{ path('app_home') }}">IssueFlow</a>
+                <nav aria-label="Navegación principal">
+                    <a href="{{ path('app_home') }}">Inicio</a>
+                    <a href="{{ path('app_ticket_index') }}">Incidencias</a>
+                    <a href="{{ path('app_health') }}">Estado</a>
+                </nav>
+            </div>
+        </header>
+        <main class="site-main">
+            <div class="container">
+                {% block body %}{% endblock %}
+            </div>
+        </main>
     </body>
 </html>
