@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use symfony\bridge\Twig\Attribute\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 
 
 final class HomeController
