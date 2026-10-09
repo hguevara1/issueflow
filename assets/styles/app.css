@@ -45,9 +45,9 @@ main { padding-block: 2.5rem; }
     height: 3px;
     background: linear-gradient(
         90deg,
-        #f7f779,
-        #adaa4c,
-        #3b82f6
+        #3b82f6,
+        /* #adaa4c, */
+        #f7f779
     );
     box-shadow: 0 0 8px rgb(56 189 248 / 45%);
 }

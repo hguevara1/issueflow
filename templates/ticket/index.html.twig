@@ -1,0 +1,26 @@
+{# Esta plantilla hereda de base.html.twig #}
+{% extends "base.html.twig" %}
+
+{# 
+    Sobreescribimos el título de la página, usamos la variable title, la
+    cual se pasa desde el controlador.
+#}
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">IssueFlow</p>
+            <h1 >{{title}}</h1>
+        </div>
+
+        <p class="counter">Hay {{ tickets|length }} incidencias</p>
+    </div>
+    <div class="ticket-list">
+        {% for t in tickets %}
+            {# <p>{{ ticket.id }} - {{ ticket.title }} - Prioridad: {{ ticket.priority }}</p> #}
+            {% include 'ticket/_ticket_card.html.twig' with {'ticket': t} only %}
+        {% else %}
+            <p>No hay incidencias disponibles.</p>
+        {% endfor %}
+{% endblock %}
