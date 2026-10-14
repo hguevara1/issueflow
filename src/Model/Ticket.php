@@ -20,7 +20,8 @@ final class Ticket
     public function __construct(
         private string $id,
         private string $title,
-        private string $priority
+        private string $priority,
+        private string $status
     ) {
 
     }
@@ -36,11 +37,20 @@ final class Ticket
     {
         return $this->priority;
     }
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
     
     
     public function isUrgent(): bool
     {
         return $this->priority === 'urgent';
+    }
+
+    public function isOpen(): bool
+    {
+        return $this->status === 'open';
     }
 
     public static function getAllTickets(): array
@@ -50,16 +60,19 @@ final class Ticket
                 id: 'INC-1001',
                 title: 'No puedo iniciar sesión',
                 priority: 'urgent',
+                status: 'open'
             ),
             new Ticket(
                 id: 'INC-1002',
                 title: 'Error en la factura',
                 priority: 'high',
+                status: 'in_progress'
             ),
             new Ticket(
                 id: 'INC-1003',
                 title: 'Actualizar datos de contacto',
                 priority: 'normal',
+                status: 'closed'
             ),
         ];
     }
