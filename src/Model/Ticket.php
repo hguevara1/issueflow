@@ -42,4 +42,25 @@ final class Ticket
     {
         return $this->priority === 'urgent';
     }
+
+    public static function getAllTickets(): array
+    {
+        return [
+            new Ticket(
+                id: 'INC-1001',
+                title: 'No puedo iniciar sesión',
+                priority: 'urgent',
+            ),
+            new Ticket(
+                id: 'INC-1002',
+                title: 'Error en la factura',
+                priority: 'high',
+            ),
+            new Ticket(
+                id: 'INC-1003',
+                title: 'Actualizar datos de contacto',
+                priority: 'normal',
+            ),
+        ];
+    }
 }
