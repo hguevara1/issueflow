@@ -21,7 +21,7 @@ final class Ticket
         private string $id,
         private string $title,
         private TicketPriority $priority,
-        private string $status
+        private TicketStatus $status
     ) {
 
     }
@@ -37,7 +37,7 @@ final class Ticket
     {
         return $this->priority;
     }
-    public function getStatus(): string
+    public function getStatus(): TicketStatus
     {
         return $this->status;
     }
@@ -50,7 +50,7 @@ final class Ticket
 
     public function isOpen(): bool
     {
-        return $this->status === 'open';
+        return $this->status ->isOpen();
     }
 
     public static function getAllTickets(): array
@@ -60,19 +60,19 @@ final class Ticket
                 id: 'INC-1001',
                 title: 'No puedo iniciar sesión',
                 priority: TicketPriority::Urgent,
-                status: 'open'
+                status: TicketStatus::Open
             ),
             new Ticket(
                 id: 'INC-1002',
                 title: 'Error en la factura',
                 priority: TicketPriority::High,
-                status: 'in_progress'
+                status: TicketStatus::InProgress
             ),
             new Ticket(
                 id: 'INC-1003',
                 title: 'Actualizar datos de contacto',
                 priority: TicketPriority::Normal,
-                status: 'closed'
+                status: TicketStatus::Closed
             ),
         ];
     }

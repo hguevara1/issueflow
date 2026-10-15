@@ -15,7 +15,7 @@
         <p class="ticket-id">{{ ticket.id }}</p>
         <h1>{{ ticket.title }}</h1>
         <p>Prioridad: <strong>{{ ticket.priority.value}}</strong></p>
-        <p>Estado: <strong>{{ ticket.status }}</strong></p>
+        <p>Estado: <strong>{{ ticket.status.value }}</strong></p>
 
         {% if ticket.urgent %}
             <p>Requiere atención inmediata</p>
@@ -23,7 +23,7 @@
 
         
         {% if not ticket.open %}
-            <p>Esta incidencia no está abierta.</p>
+            <p>Esta incidencia ya está siendo gestionada o está cerrada.</p>
         {% endif %}
     </article>
 {% endblock %}
