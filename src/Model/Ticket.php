@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-
+use invalidArgumentException;
 
 
 final class Ticket
@@ -18,12 +18,24 @@ final class Ticket
     */
 
     public function __construct(
-        private string $id,
+        private readonly string $id,
         private string $title,
         private TicketPriority $priority,
         private TicketStatus $status
     ) {
+        if (preg_match('/^INC-\d{4}$/', $this->id) !== 1) {
+            throw new InvalidArgumentException(
+                'El ID del ticket debe tener el formato INC-XXXX, donde XXXX son cuatro dígitos.'
+            );
+        }
 
+        $normalizedTitle = trim($title);
+        if (empty($normalizedTitle)) {
+            throw new InvalidArgumentException(
+                'El título del ticket no puede estar vacío.'
+            );
+        }
+        $this->title = $normalizedTitle;
     }
     public function getId(): string
     {
@@ -52,28 +64,5 @@ final class Ticket
     {
         return $this->status ->isOpen();
     }
-
-    public static function getAllTickets(): array
-    {
-        return [
-            new Ticket(
-                id: 'INC-1001',
-                title: 'No puedo iniciar sesión',
-                priority: TicketPriority::Urgent,
-                status: TicketStatus::Open
-            ),
-            new Ticket(
-                id: 'INC-1002',
-                title: 'Error en la factura',
-                priority: TicketPriority::High,
-                status: TicketStatus::InProgress
-            ),
-            new Ticket(
-                id: 'INC-1003',
-                title: 'Actualizar datos de contacto',
-                priority: TicketPriority::Normal,
-                status: TicketStatus::Closed
-            ),
-        ];
-    }
+   
 }

@@ -16,9 +16,12 @@
         <h1>{{ ticket.title }}</h1>
         <p>Prioridad: <strong>{{ ticket.priority.value}}</strong></p>
         <p>Estado: <strong>{{ ticket.status.value }}</strong></p>
-
+        <p >
+            Objetivo de respuesta: <strong class="{{ responseTargetHours == 4 ? 'texto-rojo titilar' : '' }}">
+        {{ responseTargetHours }} </strong> horas</p>
         {% if ticket.urgent %}
-            <p>Requiere atención inmediata</p>
+            <p class="{{ responseTargetHours == 4 ? 'texto-rojo titilar' : '' }}">
+                Requiere atención inmediata</p>
         {% endif %}
 
         

@@ -51,6 +51,18 @@ main { padding-block: 2.5rem; }
     );
     box-shadow: 0 0 8px rgb(56 189 248 / 45%);
 }
+.titilar {
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%   { opacity: 1; }
+    50%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+.texto-rojo {
+    color: red;
+}
+
 /* Ajuste sencillo para pantallas pequeñas. */
 @media (max-width: 640px) {
     .header-inner, .page-header, .ticket-card { align-items: flex-start; flex-direction: column; }

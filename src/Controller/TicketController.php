@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Ticket;
+
+use App\Service\TicketCatalog;
+use App\Service\TicketSlaCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+
 
 // Mi clase TicketController hereda de AbstractController de Symfony
 final class TicketController extends AbstractController
 {
-    
+    public function __construct(
+        private readonly TicketCatalog $ticketCatalog,
+        private readonly TicketSlaCalculator $ticketSlaCalculator
+    ) {}
 
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
     // El método que devuelve la lista de tickets por convención REST es index().
@@ -21,7 +26,7 @@ final class TicketController extends AbstractController
         return $this->render('ticket/index.html.twig', 
         [
             'title' => 'Incidencias',
-            'tickets' => Ticket::getAllTickets()
+            'tickets' => $this->ticketCatalog->all()
         ]);
         
     }
@@ -36,10 +41,7 @@ final class TicketController extends AbstractController
         $ticket = null;
 
         // Se recorre el array de tickets para buscar el ticket con el ID proporcionado.
-        $ticket = array_find(
-                Ticket::getAllTickets(),
-                fn(Ticket $ticket): bool => $ticket->getId() === $id
-            );
+        $ticket = $this->ticketCatalog->find($id);
         
         if ($ticket === null) {
             // Si no se encuentra el ticket, se lanza una excepción NotFoundHttpException.
@@ -50,7 +52,8 @@ final class TicketController extends AbstractController
         
         return $this->render('ticket/show.html.twig', 
         [
-            'ticket' => $ticket
+            'ticket' => $ticket,
+            'responseTargetHours' => $this->ticketSlaCalculator->getResponseTargetHours($ticket)
         ]);
 
         
