@@ -11,6 +11,16 @@ enum TicketPriority: string
     case Normal = 'normal';
     case Low = 'low';
 
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Urgent => 'Urgente',
+            self::High => 'Alta',
+            self::Normal => 'Normal',
+            self::Low => 'Baja',
+        };
+    }
+
     public function isUrgent(): bool
     {
         return $this === self::Urgent;
