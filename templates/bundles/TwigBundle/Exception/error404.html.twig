@@ -1,0 +1,9 @@
+{# Extiende la plantilla base #}
+{% extends 'base.html.twig' %}
+
+{# Define el bloque de cuerpo de la página #}
+{% block body %}
+    <h1>Página no encontrada (404)</h1>
+    <p>Lo sentimos, la página que estás buscando no existe.</p>
+    <a href="{{ path('app_ticket_index') }}">Volver a incidencias</a>
+{% endblock %}

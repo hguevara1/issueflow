@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error 500{% endblock %}
+
+{% block body %}
+<h1>Error 500</h1>
+
+<p>Ha ocurrido un error interno en el servidor.</p>
+
+{% if exception is defined and app.debug %}
+    <p><strong>Mensaje técnico:</strong></p>
+    <pre>{{ exception.message }}</pre>
+{% endif %}
+{% endblock %}
