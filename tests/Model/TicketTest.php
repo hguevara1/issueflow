@@ -7,9 +7,10 @@ namespace App\Tests\Model;
 use App\Model\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class TicketTest extends TestCase
 {
@@ -28,15 +29,27 @@ final class TicketTest extends TestCase
         
         
     }
+    public static function invalidId(): iterable
+    {
+        yield 'non_inc_prefix' => ['Ticket0001'];          
+        yield 'too_few_digits' => ['INC-101'];             
+        yield 'too_many_digits' => ['INC-12345'];          
+        yield 'invalid_characters' => ['INC_1001'];        
+        yield 'lowercase_prefix' => ['inc-2345'];          
+        yield 'empty_string' => [''];        
+    }
 
     #[Test]
-    public function it_rejects_invalid_ticket_ids(): void
+    #[DataProvider('invalidId')]
+    public function it_rejects_invalid_ticket_ids(
+        string $invalidId
+        ): void
     {
         $this->expectException(InvalidArgumentException::class);
         
 
         new Ticket(
-            id: 'Ticket001',
+            id: $invalidId,
             title: 'Incidencia válida',
             priority: TicketPriority::Low,
             status: TicketStatus::InProgress
