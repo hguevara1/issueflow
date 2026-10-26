@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Model\Ticket;
+use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 use App\Service\TicketSlaCalculator;
@@ -29,7 +29,7 @@ final class TicketSlaCalculatorTest extends TestCase
         int $expectedHours
     ): void {
         $ticket = new Ticket(
-            id: 'INC-2001',
+            code: 'INC-2001',
             title: 'Incidiencia de prueba',
             priority: $priority,
             status: TicketStatus::InProgress,

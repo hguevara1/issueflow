@@ -6,7 +6,7 @@ namespace App\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use App\Contract\TicketCatalogInterface;
-use App\Model\Ticket;
+use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 
@@ -19,19 +19,19 @@ final class InMemoryTicketCatalog implements TicketCatalogInterface
     {
         $this->tickets = [
             new Ticket(
-                id: 'INC-1001',
+                code: 'INC-1001',
                 title: 'No puedo iniciar sesión',
                 priority: TicketPriority::Urgent,
                 status: TicketStatus::Open
             ),
             new Ticket(
-                id: 'INC-1002',
+                code: 'INC-1002',
                 title: 'Error en la factura',
                 priority: TicketPriority::High,
                 status: TicketStatus::InProgress
             ),
             new Ticket(
-                id: 'INC-1003',
+                code: 'INC-1003',
                 title: 'Actualizar datos de contacto',
                 priority: TicketPriority::Normal,
                 status: TicketStatus::Closed
@@ -44,11 +44,11 @@ final class InMemoryTicketCatalog implements TicketCatalogInterface
         return $this->tickets;
     }
 
-    public function find(string $id): ?Ticket
+    public function findByCode(string $code): ?Ticket
     {
         return array_find(
             $this->tickets,
-            fn(Ticket $ticket): bool => $ticket->getId() === $id
+            fn(Ticket $ticket): bool => $ticket->getCode() === $code
         );
     }
 }

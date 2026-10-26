@@ -34,26 +34,26 @@ final class TicketController extends AbstractController
     }
 
     // Ruta dinámica para mostrar un ticket específico por su ID.
-    #[Route('/tickets/{id}', name:"app_ticket_show", methods: ['GET'])]
+    #[Route('/tickets/{code}', name:"app_ticket_show", methods: ['GET'])]
     // El método que devuelve un ticket en particular por convención REST es show().
-    // El parámetro $id identifica la ruta del ticket particular
-    public function show(string $id) {
+    // El parámetro $code identifica la ruta del ticket particular
+    public function show(string $code) {
 
         // Se inicializa la variable $ticket como null, que contendrá el ticket encontrado.    
         $ticket = null;
 
         // Se recorre el array de tickets para buscar el ticket con el ID proporcionado.
-        $ticket = $this->ticketCatalog->find($id);
+        $ticket = $this->ticketCatalog->findByCode($code);
         
         if ($ticket === null) {
             // Si no se encuentra el ticket, se lanza una excepción NotFoundHttpException.
             
             $this->logger->warning('Se solicitó una incidencia que no existe: ', [
-                'ticket_id' => $id,
+                'ticket_code' => $code,
                 'route' => 'app_ticket_show'
                 ]);
             throw $this->createNotFoundException(
-                'No existe la incidencia ' . $id
+                'No existe la incidencia ' . $code
             );
         }
         

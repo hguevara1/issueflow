@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Model\Ticket;
+use App\Entity\Ticket;
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 use App\Service\InMemoryTicketCatalog;
@@ -25,12 +25,12 @@ final class InMemoryTicketCatalogTest extends TestCase
     
     #[Test]
     #[DataProvider('findIdProviderExist')]
-    public function it_finds_tickets_by_id_yes_exist(string $id): void
+    public function it_finds_tickets_by_id_yes_exist(string $code): void
     {
         $catalog = new InMemoryTicketCatalog();
-        $ticket = $catalog->find($id);
+        $ticket = $catalog->findByCode($code);
 
-        self::assertSame($id, $ticket->getId());
+        self::assertSame($code, $ticket->getCode());
         
     }
 
@@ -45,10 +45,10 @@ final class InMemoryTicketCatalogTest extends TestCase
     
     #[Test]
     #[DataProvider('findIdProviderNotExist')]
-    public function it_finds_tickets_by_id_not_exist  (string $id): void
+    public function it_finds_tickets_by_id_not_exist  (string $code): void
     {
         $catalog = new InMemoryTicketCatalog();
-        $ticket = $catalog->find($id);
+        $ticket = $catalog->findByCode($code);
 
         self::assertNull($ticket);
         
