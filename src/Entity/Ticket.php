@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Model\TicketPriority;
 use App\Model\TicketStatus;
+use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use invalidArgumentException;
@@ -17,7 +18,7 @@ use invalidArgumentException;
  * añaden el mapping necesario para que Doctrine sepa cómo persistirlo.
  */
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ORM\Table(name: 'tickets')]
 final class Ticket
 {
