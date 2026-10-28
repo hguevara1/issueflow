@@ -34,6 +34,14 @@ final class Ticket
     #[ORM\Column(type: Types::BIGINT, options: ['unsigned' => true])]
     private ?int $id = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?User $assignee = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Category $category = null;
+
     public function __construct(
         #[ORM\Column(length: 8, unique: true)]
         private readonly string $code,
@@ -85,6 +93,25 @@ final class Ticket
         return $this->status;
     }
     
+    public function getAssignee(): ?User
+    {
+        return $this->assignee;
+    }
+    
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+    
+    public function setCategory(?Category $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function assignTo(?User $assignee): void
+    {
+        $this->assignee = $assignee;
+    }
     
     public function isUrgent(): bool
     {
@@ -95,5 +122,7 @@ final class Ticket
     {
         return $this->status ->isOpen();
     }
+
+
    
 }
