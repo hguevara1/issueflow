@@ -28,5 +28,21 @@
         {% if not ticket.open %}
             <p>Esta incidencia ya está siendo gestionada o está cerrada.</p>
         {% endif %}
+        <p>
+            Categoría:
+            {% if ticket.category %}
+                {{ ticket.category.name }}
+            {% else %}
+                Sin categoría
+            {% endif %}
+        </p>
+        <p>
+            Asignado a:
+            {% if ticket.assignee %}
+                {{ ticket.assignee.name }}
+            {% else %}
+                No hay nadie asignado
+            {% endif %}
+        </p>
     </article>
 {% endblock %}
