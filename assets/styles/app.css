@@ -1,7 +1,9 @@
 /*
- * Estilos mínimos de IssueFlow para la Clase 10.
- * El objetivo es dar una presentación clara sin convertir la sesión
- * en una clase de CSS. Estos estilos pueden evolucionar durante el curso.
+ * Estilos IssueFlow con paleta de colores coherente:
+ * - Color primario (botones/enlaces): #0f766e (Teal)
+ * - Color secundario / Cabecera: #17324d (Navy)
+ * - Fondo general: #f5f7fa
+ * - Superficies / Tarjetas: #ffffff con borde #d8e1e8
  */
 
 /* Variables visuales y tipografía general de la aplicación. */
@@ -9,12 +11,45 @@
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: #1f2937;
     background: #f5f7fa;
+    --primary-color: #0f766e;
+    --primary-hover: #115e59;
+    --primary-active: #134e4a;
+    --primary-light: #f0fdfa;
+    --header-bg: #17324d;
+    --border-color: #d8e1e8;
+    --text-muted: #64748b;
+    --danger-color: #dc2626;
 }
 
 /* Normalización básica del modelo de cajas. */
 * { box-sizing: border-box; }
-body { margin: 0; }
-a { color: #0f766e; }
+body { margin: 0; line-height: 1.5; }
+
+/* Enlaces */
+a {
+    color: var(--primary-color, #0f766e);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+a:hover {
+    color: var(--primary-hover, #115e59);
+    text-decoration: underline;
+}
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    color: var(--primary-color, #0f766e);
+    font-weight: 600;
+    font-size: .95rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+}
+.back-link:hover {
+    color: var(--primary-hover, #115e59);
+    text-decoration: underline;
+}
 
 /* Contenedor común para mantener el contenido centrado y legible. */
 .container { width: min(960px, calc(100% - 2rem)); margin-inline: auto; }
@@ -22,31 +57,202 @@ a { color: #0f766e; }
 /* Cabecera principal y navegación. */
 .site-header { background: #17324d; color: white; }
 .header-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.site-header a { color: white; text-decoration: none; }
+.site-header a { color: white; text-decoration: none; font-weight: 500; }
+.site-header a:hover { text-decoration: underline; }
 .brand { font-weight: 800; font-size: 1.2rem; }
-nav { display: flex; gap: 1rem; }
+nav { display: flex; gap: 1.25rem; }
 
 /* Espaciado principal de las páginas. */
 main { padding-block: 2.5rem; }
 
-/* Componentes visuales reutilizados en home y tickets. */
-.hero, .ticket-card, .ticket-detail { background: white; border: 1px solid #d8e1e8; border-radius: 12px; padding: 1.25rem; }
+/* Componentes visuales reutilizados en home, tickets y formularios. */
+.hero, .ticket-card, .ticket-detail, .form-card {
+    background: white;
+    border: 1px solid #d8e1e8;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
 .hero { padding: 2rem; }
-.page-header { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1rem; }
-.eyebrow, .ticket-id { color: #64748b; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.page-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+.page-header h1 { margin: 0; font-size: 1.75rem; }
+.eyebrow, .ticket-id { color: #64748b; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 .25rem; }
 .ticket-list { display: grid; gap: .85rem; }
 .ticket-card { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 .ticket-card h2 { margin: .15rem 0 .5rem; font-size: 1.05rem; }
 .ticket-card p { margin: .25rem 0; }
-.counter { color: #64748b; }
-.button { display: inline-block; background: #0f766e; color: white; padding: .7rem 1rem; border-radius: 8px; text-decoration: none; }
+.counter { color: #64748b; margin: 0; }
+
+/* Botones conservando la línea de colores */
+.button,
+button,
+input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color, #0f766e);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 600;
+    padding: .65rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+.button:hover,
+button:hover,
+input[type="submit"]:hover {
+    background: var(--primary-hover, #115e59);
+    color: #ffffff;
+    text-decoration: none;
+}
+.button:active,
+button:active,
+input[type="submit"]:active {
+    background: var(--primary-active, #134e4a);
+    transform: translateY(1px);
+}
+.button:focus-visible,
+button:focus-visible,
+input[type="submit"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3);
+}
+
+/* Variantes de botones */
+.button-outline {
+    background: transparent;
+    color: var(--primary-color, #0f766e);
+    border: 1px solid var(--primary-color, #0f766e);
+}
+.button-outline:hover {
+    background: var(--primary-color, #0f766e);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.button-secondary {
+    background: #17324d;
+    color: #ffffff;
+}
+.button-secondary:hover {
+    background: #0e2032;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Estilos para formularios */
+.form-card {
+    max-width: 600px;
+    margin-top: 1rem;
+}
+.form-description {
+    color: var(--text-muted, #64748b);
+    margin: 0 0 1.25rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Filas y campos del formulario */
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+/* Etiquetas */
+form label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #334155;
+    display: block;
+}
+form label.required::after {
+    content: " *";
+    color: var(--danger-color, #dc2626);
+}
+
+/* Campos de entrada, selectores y áreas de texto */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form select,
+form textarea {
+    width: 100%;
+    padding: .65rem .85rem;
+    font-family: inherit;
+    font-size: .95rem;
+    color: #1f2937;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="number"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--primary-color, #0f766e);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+}
+
+form input[type="text"]::placeholder,
+form textarea::placeholder {
+    color: #94a3b8;
+}
+
+form select {
+    cursor: pointer;
+}
+
+/* Lista de errores de validación en campos */
+form ul {
+    list-style: none;
+    padding: 0;
+    margin: .25rem 0 0;
+    color: var(--danger-color, #dc2626);
+    font-size: .85rem;
+    font-weight: 500;
+}
+form ul li {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+}
+
+/* Errores globales del formulario */
+form > ul {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    color: #991b1b;
+}
+
+/* Espaciado para el botón de envío */
+form > div:has(button[type="submit"]),
+form > div:has(input[type="submit"]) {
+    margin-top: .5rem;
+}
+
 /* Barra de progreso de navegación de Turbo. */
 .turbo-progress-bar {
     height: 3px;
     background: linear-gradient(
         90deg,
         #3b82f6,
-        /* #adaa4c, */
         #f7f779
     );
     box-shadow: 0 0 8px rgb(56 189 248 / 45%);
@@ -63,7 +269,10 @@ main { padding-block: 2.5rem; }
     color: red;
 }
 
-/* Ajuste sencillo para pantallas pequeñas. */
+/* Ajuste responsivo para pantallas pequeñas. */
 @media (max-width: 640px) {
-    .header-inner, .page-header, .ticket-card { align-items: flex-start; flex-direction: column; }
+    .header-inner, .page-header, .ticket-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }

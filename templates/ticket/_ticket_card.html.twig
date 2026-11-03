@@ -2,8 +2,8 @@
     <div>
         <p class="ticket-id">#{{ ticket.code }}</p>
         <h2>{{ ticket.title }}</h2>
-        <p >Prioridad: <strong>{{ ticket.priority.label }}</strong></p>
-        <p >Estado: <strong>{{ ticket.status.label }}</strong></p>
+        <p>Prioridad: <strong>{{ ticket.priority.label }}</strong></p>
+        <p>Estado: <strong>{{ ticket.status.label }}</strong></p>
         <p>
             Categoría:
             {% if ticket.category %}
@@ -20,11 +20,7 @@
                 No hay nadie asignado
             {% endif %}
         </p>
-
     </div>
 
-
-
-
-    <a href="{{ path('app_ticket_show', {code: ticket.code}) }}" ">Ver detalles</a>
+    <a href="{{ path('app_ticket_show', {code: ticket.code}) }}" class="button button-outline">Ver detalles</a>
 </article>
