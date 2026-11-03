@@ -32,11 +32,17 @@ final class TicketController extends AbstractController
 
     #[Route('/tickets', name: 'app_ticket_index', methods: ['GET'])]
     // El método que devuelve la lista de tickets por convención REST es index().
-    public function index(): Response {
+    public function index(Request $request): Response {
+        $lastTicketCode = null;
+        if ($request->hasPreviousSession()) {
+            $lastTicketCode = $request->getSession()->get('last_ticket_code');
+        }
+
         return $this->render('ticket/index.html.twig', 
         [
             'title' => 'Incidencias',
-            'tickets' => $this->ticketCatalog->all()
+            'tickets' => $this->ticketCatalog->all(),
+            'lastTicketCode' => $lastTicketCode
         ]);
         
     }
@@ -71,6 +77,15 @@ final class TicketController extends AbstractController
 
             $this->entityManager->persist($ticket);
             $this->entityManager->flush();
+            /*
+                * Un Flash Message vive en la sesion y esta pensado para consumirse una sola vez.
+                * Lo podemos usar para confirmar una creacion de una incidencia despues del redirect
+            */
+            $this->addFlash(
+                'success',
+                sprintf('Se ha creado la incidencia con código: %s', $ticket->getCode())
+            );
+
                   
 
             // Luego de guardar el ticket, redirigimos a la pagina de detalle de ticket
@@ -88,7 +103,7 @@ final class TicketController extends AbstractController
     #[Route('/tickets/{code}', name:"app_ticket_show", methods: ['GET'])]
     // El método que devuelve un ticket en particular por convención REST es show().
     // El parámetro $code identifica la ruta del ticket particular
-    public function show(string $code): Response {
+    public function show(string $code, Request $request): Response {
 
         // Se inicializa la variable $ticket como null, que contendrá el ticket encontrado.    
         $ticket = null;
@@ -107,6 +122,8 @@ final class TicketController extends AbstractController
                 'No existe la incidencia ' . $code
             );
         }
+        
+        $request->getSession()->set('last_ticket_code', $ticket->getCode());
         
         return $this->render('ticket/show.html.twig', 
         [

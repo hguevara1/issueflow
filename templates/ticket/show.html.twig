@@ -3,6 +3,13 @@
 {# Usamos el ID del ticket para construir un título de página específico. #}
 {% block title %}{{ ticket.code }} · IssueFlow{% endblock %}
 {% block body %}
+    {% if app.request.hasPreviousSession %}
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <p>
         {# No escribimos /tickets manualmente: usamos el nombre de la ruta. #}
         <a href="{{ path('app_ticket_index') }}" class="back-link">← Volver a incidencias</a>

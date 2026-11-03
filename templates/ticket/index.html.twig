@@ -16,6 +16,13 @@
         <a href="{{ path('app_ticket_new') }}" class="button">+ Nueva incidencia</a>
         <p class="counter">Hay {{ tickets|length }} incidencias</p>
     </div>
+    {# Si hay un ticket creado recientemente, mostramos un mensaje de éxito. #}
+    {% if lastTicketCode is not null %}
+        <div class="flash-success">
+            Última incidencia creada: 
+            <a href="{{ path('app_ticket_show', {'code': lastTicketCode}) }}">{{ lastTicketCode }}</a>
+        </div>
+    {% endif %}
     <div class="ticket-list">
         {% for t in tickets %}
             {# <p>{{ ticket.id }} - {{ ticket.title }} - Prioridad: {{ ticket.priority }}</p> #}
