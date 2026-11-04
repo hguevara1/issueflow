@@ -13,7 +13,9 @@
             <p class="eyebrow">IssueFlow</p>
             <h1>{{title}}</h1>
         </div>
-        <a href="{{ path('app_ticket_new') }}" class="button">+ Nueva incidencia</a>
+        {% if is_granted('ROLE_AGENT') %}
+            <a href="{{ path('app_ticket_new') }}" class="button">+ Nueva incidencia</a>
+        {% endif %}
         <p class="counter">Hay {{ tickets|length }} incidencias</p>
     </div>
     {# Si hay un ticket creado recientemente, mostramos un mensaje de éxito. #}

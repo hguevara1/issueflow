@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 // Mi clase TicketController hereda de AbstractController de Symfony
@@ -48,6 +49,10 @@ final class TicketController extends AbstractController
     }
 
     #[Route('/tickets/new', name: 'app_ticket_new', methods: ['GET', 'POST'])]
+    #[IsGranted(
+        'ROLE_AGENT',
+        message: 'Necesitas permisos de agente para crear una incidencia.'
+    )]
     public function new(Request $request): Response
     {
         $data = new TicketCreateData();
