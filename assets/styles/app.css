@@ -6,7 +6,6 @@
  * - Superficies / Tarjetas: #ffffff con borde #d8e1e8
  */
 
-/* Variables visuales y tipografía general de la aplicación. */
 :root {
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: #1f2937;
@@ -21,11 +20,9 @@
     --danger-color: #dc2626;
 }
 
-/* Normalización básica del modelo de cajas. */
 * { box-sizing: border-box; }
 body { margin: 0; line-height: 1.5; }
 
-/* Enlaces */
 a {
     color: var(--primary-color, #0f766e);
     text-decoration: none;
@@ -36,6 +33,7 @@ a:hover {
     color: var(--primary-hover, #115e59);
     text-decoration: underline;
 }
+
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -51,10 +49,8 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Contenedor común para mantener el contenido centrado y legible. */
 .container { width: min(960px, calc(100% - 2rem)); margin-inline: auto; }
 
-/* Cabecera principal y navegación. */
 .site-header { background: #17324d; color: white; }
 .header-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .site-header a { color: white; text-decoration: none; font-weight: 500; }
@@ -62,10 +58,8 @@ a:hover {
 .brand { font-weight: 800; font-size: 1.2rem; }
 nav { display: flex; gap: 1.25rem; }
 
-/* Espaciado principal de las páginas. */
 main { padding-block: 2.5rem; }
 
-/* Componentes visuales reutilizados en home, tickets y formularios. */
 .hero, .ticket-card, .ticket-detail, .form-card {
     background: white;
     border: 1px solid #d8e1e8;
@@ -82,7 +76,6 @@ main { padding-block: 2.5rem; }
 .ticket-card p { margin: .25rem 0; }
 .counter { color: #64748b; margin: 0; }
 
-/* Botones conservando la línea de colores */
 .button,
 button,
 input[type="submit"] {
@@ -122,7 +115,6 @@ input[type="submit"]:focus-visible {
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3);
 }
 
-/* Variantes de botones */
 .button-outline {
     background: transparent;
     color: var(--primary-color, #0f766e);
@@ -144,7 +136,6 @@ input[type="submit"]:focus-visible {
     text-decoration: none;
 }
 
-/* Estilos para formularios */
 .form-card {
     max-width: 600px;
     margin-top: 1rem;
@@ -160,14 +151,12 @@ form {
     gap: 1.25rem;
 }
 
-/* Filas y campos del formulario */
 form > div {
     display: flex;
     flex-direction: column;
     gap: .4rem;
 }
 
-/* Etiquetas */
 form label {
     font-size: .9rem;
     font-weight: 600;
@@ -188,7 +177,6 @@ form label.required::after {
     margin-bottom: 1rem;
 }
 
-/* Campos de entrada, selectores y áreas de texto */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
@@ -226,7 +214,6 @@ form select {
     cursor: pointer;
 }
 
-/* Lista de errores de validación en campos */
 form ul {
     list-style: none;
     padding: 0;
@@ -241,7 +228,6 @@ form ul li {
     gap: .35rem;
 }
 
-/* Errores globales del formulario */
 form > ul {
     background: #fef2f2;
     border: 1px solid #fecaca;
@@ -250,13 +236,11 @@ form > ul {
     color: #991b1b;
 }
 
-/* Espaciado para el botón de envío */
 form > div:has(button[type="submit"]),
 form > div:has(input[type="submit"]) {
     margin-top: .5rem;
 }
 
-/* Barra de progreso de navegación de Turbo. */
 .turbo-progress-bar {
     height: 3px;
     background: linear-gradient(
@@ -266,6 +250,7 @@ form > div:has(input[type="submit"]) {
     );
     box-shadow: 0 0 8px rgb(56 189 248 / 45%);
 }
+
 .titilar {
     animation: blink 1s infinite;
 }
@@ -274,11 +259,112 @@ form > div:has(input[type="submit"]) {
     50%  { opacity: 0; }
     100% { opacity: 1; }
 }
+
 .texto-rojo {
     color: red;
 }
 
-/* Ajuste responsivo para pantallas pequeñas. */
+.error-container {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #dc3545;
+    margin: 0;
+}
+
+.error-title {
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+
+.error-message {
+    color: #666;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.error-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 12px 28px;
+    background: #0d6efd;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.error-button:hover {
+    background: #084298;
+    color: white;
+}
+
+.filter-card {
+    background: #ffffff;
+    border: 1px solid #d8e1e8;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: .75rem;
+    align-items: end;
+}
+
+.filter-form > div {
+    margin: 0;
+}
+
+.filter-form input[type="search"] {
+    width: 100%;
+    padding: .65rem .85rem;
+    font: inherit;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.filter-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row !important;
+    gap: .75rem;
+}
+
+.pagination {
+    margin-top: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+@media (max-width: 800px) {
+    .filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        grid-column: auto;
+    }
+
+    .pagination {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 640px) {
     .header-inner, .page-header, .ticket-card {
         align-items: flex-start;

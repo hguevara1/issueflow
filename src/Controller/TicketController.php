@@ -6,6 +6,8 @@ namespace App\Controller;
 
 
 use App\Entity\Ticket;
+use \App\Form\Model\TicketSearchCriteria;
+use App\Form\TicketFilterType;
 use App\Contract\TicketCatalogInterface;
 use App\Contract\TicketSlaCalculatorInterface;
 use App\Form\Model\TicketCreateData;
@@ -39,11 +41,28 @@ final class TicketController extends AbstractController
             $lastTicketCode = $request->getSession()->get('last_ticket_code');
         }
 
+        $criteria = new TicketSearchCriteria();
+
+        $filterForm = $this->createForm(TicketFilterType::class, $criteria, [
+            'action' => $this->generateUrl('app_ticket_index'),
+        ]);
+
+        $filterForm->handleRequest($request);
+
+        $page = max(1, (int)$request->query->get('page', 1));
+
+        $ticketPage = $this->ticketCatalog->search(
+            criteria: $criteria, 
+            page: $page, 
+            pageSize: 3
+        );
+
         return $this->render('ticket/index.html.twig', 
         [
             'title' => 'Incidencias',
-            'tickets' => $this->ticketCatalog->all(),
-            'lastTicketCode' => $lastTicketCode
+            'ticketPage' => $ticketPage,
+            'lastTicketCode' => $lastTicketCode,
+            'filterForm' => $filterForm
         ]);
         
     }

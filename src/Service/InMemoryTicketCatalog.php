@@ -11,7 +11,7 @@ use App\Model\TicketPriority;
 use App\Model\TicketStatus;
 
 
-final class InMemoryTicketCatalog implements TicketCatalogInterface
+final class InMemoryTicketCatalog // implements TicketCatalogInterface
 {
     private array $tickets;
 
@@ -40,6 +40,11 @@ final class InMemoryTicketCatalog implements TicketCatalogInterface
     }
 
     public function all(): array
+    {
+        return $this->tickets;
+    }
+
+    public function search(): array
     {
         return $this->tickets;
     }
