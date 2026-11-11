@@ -1,0 +1,46 @@
+services:
+
+  app:
+    build:
+      context: .
+      
+    container_name: issueflow_app # nombre del contenedor
+
+    ports:
+      - "8000:80" # 8000 es el puerto del ordenador host, 80 es el puerto del contenedor
+
+    environment:
+      APP_ENV: dev # Symfony environment
+      APP_DEBUG: 1 # Symfony debug mode
+      APP_SECRET: 1234567890abcdef # Symfony secret
+      DATABASE_URL: "mysql://issueflow:issueflow_pass@db:3306/issueflow?serverVersion=8.4.0&charset=utf8mb4" # Database connection string
+
+    depends_on:
+      db:
+        condition: service_healthy # Espera a que el contenedor de la base de datos esté listo antes de iniciar la aplicación
+
+  db:
+    image: mysql:8.4 # Imagen de MySQL
+    container_name: issueflow_db # nombre del contenedor
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass # Contraseña del usuario root
+      MYSQL_DATABASE: issueflow # Nombre de la base de datos
+      MYSQL_USER: issueflow # Nombre del usuario
+      MYSQL_PASSWORD: issueflow_pass # Contraseña del usuario
+
+    ports:
+      - "3307:3306" # 3307 es el puerto del ordenador host, 3306 es el puerto del contenedor
+
+    volumes:
+      - mysql_data:/var/lib/mysql # Volumen para persistir los datos de la base de datos
+
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  mysql_data: # Volumen para persistir los datos de la base de datos     
