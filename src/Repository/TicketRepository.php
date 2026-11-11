@@ -32,7 +32,7 @@ final class TicketRepository extends ServiceEntityRepository implements TicketCa
         return $this->findOneBy(['code' => $code]);
     }
 
-    public function search(TicketSearchCriteria $criteria, int $page = 1, int $pageSize): WindowPage
+    public function search(TicketSearchCriteria $criteria, int $page, int $pageSize): WindowPage
     {
         $queryBuilder = $this->createQueryBuilder('ticket')
             ->leftJoin('ticket.category', 'category')
